@@ -1,11 +1,13 @@
 from locust import HttpUser, task, between
 import os
 
-# Retrieve the endpoint from the environment variable
+# Retrieve the endpoint from the environment variable and ensure it includes the scheme
 API_ENDPOINT = os.getenv("API_ENDPOINT")
-
+if not API_ENDPOINT.startswith("http"):
+    API_ENDPOINT = f"http://{API_ENDPOINT}"
+    
 class ApiUser(HttpUser):
-    # Assuming the endpoint is set in the environment variable
+    # The endpoint is set in the environment variable, including the scheme
     host = API_ENDPOINT
     wait_time = between(1, 5)  # Simulate wait time between tasks
 
